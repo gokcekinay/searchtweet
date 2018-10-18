@@ -1,0 +1,70 @@
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Twitter;
+import twitter4j.Status;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+import com.cycling74.max.*;
+
+import java.util.List;
+
+public class searchtweetold extends MaxObject
+{
+
+	private static final String[] INLET_ASSIST = new String[]{
+		"usage: search keyword maxresults. ex. 'search #news 5'"
+	};
+	private static final String[] OUTLET_ASSIST = new String[]{
+		"username",
+		"tweet body text",
+		"date & time of tweet"
+	};
+	
+	public searchtweetold(Atom[] args)
+	{
+		declareInlets(new int[]{DataTypes.ALL});
+		declareOutlets(new int[]{DataTypes.ALL, DataTypes.ALL, DataTypes.ALL});
+		
+		setInletAssist(INLET_ASSIST);
+		setOutletAssist(OUTLET_ASSIST);
+	}
+
+	public void search(Atom[] args){
+		
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true)
+		  .setOAuthConsumerKey("a8uTk5p0hmARmckWb9UyQ")
+		  .setOAuthConsumerSecret("3zdwtAZIEZk5aPjnHtDJYO5fo7POW6j3Cep2bBb51g")
+		  .setOAuthAccessToken("130894561-not6iiGmoZOT8epXlpmDHaFfL4GBetdHY9ChnwiW")
+		  .setOAuthAccessTokenSecret("pk8hvj9W1PCbO7uD26YE03DFGK1rHcVD9tjAxTZa8g");
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		Twitter twitter = tf.getInstance();
+	   
+	   String keyword = args[0].getString();
+	   int numresults = args[1].getInt();
+       try
+		{
+	    QueryResult result = twitter.search(new Query(keyword));
+		 List<Status> tweets = result.getTweets();
+            int i=1; 
+			for (Status tweet : tweets) {
+				if (i<=numresults) {
+					outlet(2, tweet.getCreatedAt().toString());
+					outlet(1, tweet.getText());
+					outlet(0, tweet.getUser().getName());
+				}
+				i++;
+            }		
+		} catch (TwitterException te) {
+            te.printStackTrace();
+            post("Failed to search tweets: " + te.getMessage());
+		}
+	}  
+}
+
+
+
+
+
+
