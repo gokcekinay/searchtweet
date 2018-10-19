@@ -33,10 +33,12 @@ public class searchtweet extends MaxObject
 		setInletAssist(INLET_ASSIST);
 		setOutletAssist(OUTLET_ASSIST);
 		
-		OAuthConsumerKey = new String("a8uTk5p0hmARmckWb9UyQ");
-		OAuthConsumerSecret = new String("3zdwtAZIEZk5aPjnHtDJYO5fo7POW6j3Cep2bBb51g");
-		OAuthAccessToken = new String("130894561-not6iiGmoZOT8epXlpmDHaFfL4GBetdHY9ChnwiW");
-		OAuthAccessTokenSecret = new String("pk8hvj9W1PCbO7uD26YE03DFGK1rHcVD9tjAxTZa8g");
+		// Replace these with your twitter app tokens
+		// https://apps.twitter.com
+		OAuthConsumerKey = new String("____");
+		OAuthConsumerSecret = new String("____");
+		OAuthAccessToken = new String("____");
+		OAuthAccessTokenSecret = new String("____");
 	}
 
 	public void setkey(Atom[] args){
